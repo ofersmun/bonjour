@@ -7,6 +7,11 @@ multicast DNS.
 [![Build status](https://travis-ci.org/watson/bonjour.svg?branch=master)](https://travis-ci.org/watson/bonjour)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
 
+## Requirements
+
+A low level multicast dns service is required. I.E. [multicast-dns](https://www.npmjs.com/package/multicast-dns) or [mdns-server](https://www.npmjs.com/package/mdns-server).
+The selected service module must be API compatible with [multicast-dns](https://github.com/mafintosh/multicast-dns).
+
 ## Installation
 
 ```
@@ -16,7 +21,8 @@ npm install bonjour
 ## Usage
 
 ```js
-var bonjour = require('bonjour')()
+var mdnsService = require('mdns-server')
+var bonjour = require('bonjour')(mdnsService)
 
 // advertise an HTTP server on port 3000
 bonjour.publish({ name: 'My Web Server', type: 'http', port: 3000 })
@@ -32,12 +38,16 @@ bonjour.find({ type: 'http' }, function (service) {
 ### Initializing
 
 ```js
-var bonjour = require('bonjour')([options])
+var bonjour = require('bonjour')(mdnsService, [options])
 ```
 
+A low level mulitcast dns service must be selected and passed as
+an argument to the bonjour constructor. (See Requirements above)
+
+
 The `options` are optional and will be used when initializing the
-underlying multicast-dns server. For details see [the multicast-dns
-documentation](https://github.com/mafintosh/multicast-dns#mdns--multicastdnsoptions).
+low level multicast dns service. Refer to the details for the
+selected service module for option parameters.
 
 ### Publishing
 
